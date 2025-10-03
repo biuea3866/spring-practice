@@ -12,7 +12,11 @@ class TicketOffice(
         this._amount -= amount
     }
 
-    fun plusAmount(amount: Long) {
+    private fun plusAmount(amount: Long) {
         this._amount += amount
+    }
+
+    fun sellTicketTo(audience: Audience) {
+        this.plusAmount(audience.buy(this.getTicket()))
     }
 }

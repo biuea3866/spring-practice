@@ -34,4 +34,15 @@ class Bag private constructor(
     fun plusAmount(amount: Long) {
         this._amount += amount
     }
+
+    fun hold(ticket: Ticket): Long {
+        if (this.hasInvitation()) {
+            this.setTicket(ticket)
+            return 0L
+        } else {
+            this.setTicket(ticket)
+            this.minusAmount(ticket.fee)
+            return ticket.fee
+        }
+    }
 }
