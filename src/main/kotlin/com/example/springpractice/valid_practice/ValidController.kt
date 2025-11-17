@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.GroupSequence
-import javax.validation.Valid
-import javax.validation.constraints.Email
-import javax.validation.constraints.Size
+import jakarta.validation.GroupSequence
+import jakarta.validation.Valid
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.Size
 
 @RestController
 class ValidController {

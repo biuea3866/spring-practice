@@ -1,0 +1,199 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "id": 1,
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "type": "timeseries",
+      "title": "Cache Hit Rate",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(cache_gets_total{job=\"spring-boot-app\", result=\"hit\"}[1m])) / sum(rate(cache_gets_total{job=\"spring-boot-app\"}[1m])) * 100",
+          "legendFormat": "Hit Rate"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percent" } }
+    },
+    {
+      "id": 2,
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "type": "timeseries",
+      "title": "Cache Hit/Miss/Eviction",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "rate(cache_gets_total{job=\"spring-boot-app\", result=\"miss\"}[1m])",
+          "legendFormat": "Misses"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "rate(cache_evictions_total{job=\"spring-boot-app\"}[1m])",
+          "legendFormat": "Evictions"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "type": "timeseries",
+      "title": "Cache Penetration Defense",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "rate(cache_null_value_hit_total{job=\"spring-boot-app\"}[1m])",
+          "legendFormat": "Null Cache Hits"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "rate(db_query_for_nonexistent_data_total{job=\"spring-boot-app\"}[1m])",
+          "legendFormat": "DB Queries for Non-existent Data"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "type": "timeseries",
+      "title": "API Response Time (p95)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job=\"spring-boot-app\"}[1m])) by (le, uri))",
+          "legendFormat": "{{uri}}"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "id": 5,
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 8 },
+      "type": "timeseries",
+      "title": "App CPU Usage",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "rate(process_cpu_seconds_total{job=\"spring-boot-app\"}[1m]) * 100",
+          "legendFormat": "CPU Usage"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percent" } }
+    },
+    {
+      "id": 6,
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 8 },
+      "type": "timeseries",
+      "title": "JVM Heap Memory",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "jvm_memory_used_bytes{area = \"heap\", job=\"spring-boot-app\"}",
+          "legendFormat": "Used Heap"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "bytes" } }
+    },
+    {
+      "id": 7,
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 16 },
+      "type": "timeseries",
+      "title": "MySQL QPS",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "rate(mysql_global_status_queries[1m])",
+          "legendFormat": "QPS"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 16 },
+      "type": "timeseries",
+      "title": "MySQL CPU & Memory",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "rate(container_cpu_usage_seconds_total{name=\"mysql-cache-test\"}[1m]) * 100",
+          "legendFormat": "CPU Usage"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "container_memory_usage_bytes{name=\"mysql-cache-test\"}",
+          "legendFormat": "Memory Usage"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "bytes" } }
+    },
+    {
+      "id": 9,
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 16 },
+      "type": "timeseries",
+      "title": "MySQL Disk I/O",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "rate(mysql_global_status_innodb_buffer_pool_reads[1m])",
+          "legendFormat": "InnoDB Buffer Pool Reads"
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Spring Local Cache Performance Comparison",
+  "uid": "spring-local-cache-performance",
+  "version": 2
+}
